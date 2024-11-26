@@ -6,7 +6,7 @@ Purpose: Longest increasing and decreasing subsequence
 """
 
 import argparse
-from typing import NamedTuple, TextIO
+from typing import NamedTuple
 import sys
 
 
@@ -52,8 +52,8 @@ def main() -> None:
     args = get_args()
     permutation = [int(x) for x in args.permutation.split()]
 
-    inc_perms = list()
-    dec_perms = list()
+    inc_perms = []
+    dec_perms = []
 
     for index in range(len(permutation)-1):
         inc_perms.append(incr_perm(permutation[index], permutation[index+1:]))
@@ -61,8 +61,8 @@ def main() -> None:
     for index in range(len(permutation)-1):
         dec_perms.append(decr_perm(permutation[index], permutation[index+1:]))
 
-    print([x for x in inc_perms if len(x)==max([len(x) for x in inc_perms])][0])
-    print([x for x in dec_perms if len(x)==max([len(x) for x in dec_perms])][0])
+    print(max(inc_perms, key=len))
+    print(max(dec_perms, key=len))
 
 
 # --------------------------------------------------
@@ -70,20 +70,20 @@ def incr_perm(high, permutation):
     """ Give the longest increasing permutation """
 
     if permutation == []:
-        return([high])
+        return [high]
 
     if high > max(permutation):
-        return([high])
+        return [high]
 
     inc_perms = [high]
     inc = []
-    for index in range(len(permutation)):
-        if high < permutation[index]:
-            inc = [high] + incr_perm(permutation[index], permutation[index+1:])
+    for index, element in enumerate(permutation):
+        if high < element:
+            inc = [high] + incr_perm(element, permutation[index+1:])
         if len(inc) >= len(inc_perms):
             inc_perms = inc
 
-    return(inc_perms)
+    return inc_perms
 
 
 # --------------------------------------------------
@@ -91,20 +91,20 @@ def decr_perm(low, permutation):
     """ Give the longest decreasing permutation """
 
     if permutation == []:
-        return([low])
+        return [low]
 
     if low < min(permutation):
-        return([low])
+        return [low]
 
     dec_perms = [low]
     dec = []
-    for index in range(len(permutation)):
-        if low > permutation[index]:
-            dec = [low] + decr_perm(permutation[index], permutation[index+1:])
+    for index, element in enumerate(permutation):
+        if low > element:
+            dec = [low] + decr_perm(element, permutation[index+1:])
         if len(dec) >= len(dec_perms):
             dec_perms = dec
 
-    return(dec_perms)
+    return dec_perms
 
 
 # --------------------------------------------------

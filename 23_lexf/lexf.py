@@ -6,7 +6,7 @@ Purpose: Return lexographically ordered strings of length n formed from alphabet
 """
 
 import argparse
-from typing import NamedTuple, TextIO
+from typing import NamedTuple
 import sys
 
 
@@ -39,7 +39,9 @@ def get_args() -> Args:
     args = parser.parse_args()
 
     if len("".join(args.alphabet).split()) > 10:
-        sys.exit(f'Alphabet has to contain less than 10 symbols, has {len("".join(args.alphabet).split())}')
+        sys.exit(
+            'Alphabet has to contain less than 10 symbols, has '
+            f'{len("".join(args.alphabet).split())}')
 
     if args.length > 10:
         sys.exit(f'Length of string has to be less than 10, is {args.length}')
@@ -60,10 +62,10 @@ def main() -> None:
     substrings = list(alphabet)
     length = args.length
     while length > 1:
-        new_subs = list()
+        new_subs = []
         for char in alphabet:
-            for i in range(len(substrings)):
-                new_subs.append(f'{char}{substrings[i]}')
+            for element in substrings:
+                new_subs.append(f'{char}{element}')
         length += -1
         substrings = new_subs
     print(substrings)
